@@ -11,7 +11,7 @@ const Join = (props) => {
       return;
     }
 
-    const servidorSocket = await io.connect("http://192.168.10.123:3001");
+    const servidorSocket = await io.connect("http://192.168.10.103:3001");
     servidorSocket.emit("set_username", username);
 
     props.setSocket(servidorSocket);
