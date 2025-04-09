@@ -1,0 +1,5 @@
+#messageInput:focus,
+#nomeUsuario:focus {
+  outline: none;
+  box-shadow: none;
+}

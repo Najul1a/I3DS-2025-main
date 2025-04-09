@@ -1,50 +1,100 @@
-import React from 'react'
+import React, { useEffect, useRef, useState } from "react";
 
 const Chat = (props) => {
-    //Fake mensages data
-    const messages = [
-        {
-            authorId: 1,
-            authorName: "John Doe",
-            message: "oiii, como vai você?",
-        },
-        {
-            authorId: 2,
-            authorName: "Jane Doe",
-            message: "Oi, eu estou bem e você?",
-        },
-        {
-            authorId: 3,
-            authorName: "Lucas",
-            message: "Estou bem, obg por peguntar!",
-        }
-    ];
-    //-----------------------------------------------------------
-  return  <div id='chat-container' style={{width: "400px", height: "600px"}} className='m-4 bg-secondary rounded-4 p-3 d-flex flex-column'>
-    <h1>Chat</h1>
+  const [messageList, setMessageList] = useState([]);
+  const messageRef = useRef();
+  const bottomRef = useRef();
 
-    <div id="chat-body" className=' d-flex  flex-column gap-3 overflow--y-hidden h-100'>
-        {messages.map((message, index) => (
+  useEffect(() => {
+    props.socket.on("receive_message", (data) => {
+      setMessageList((current) => [...current, data]);
+    });
 
-            <div className='align-self-start me-5 bg-warning rounded-3 p-2 text-dark'  key={index}>
-                <div id="message-author" className='fw-bold'>{message.author} </div>
-                <div id="message-text" className=''>{message.message}</div>
-         </div>
-        ))}
+    return () => props.socket.off("receive_message");
+  }, [props.socket]);
+
+  useEffect(() => {
+    bottomRef.current.scrollIntoView({ behavior: "smooth" });
+  }, [messageList]);
+
+  const handleSubmit = () => {
+    const message = messageRef.current.value;
+    if (!message.trim()) return;
+
+    props.socket.emit("message", message);
+    messageRef.current.value = "";
+    messageRef.current.focus();
+  };
+
+  return (
+    <div
+      className="d-flex justify-content-center align-items-center"
+      style={{
+        minHeight: "100vh",
+        width: "100%",
+        backgroundColor: "#f9cce2", 
+        padding: "20px",
+      }}
+    >
+      <div
+        style={{
+          width: "100%",
+          maxWidth: "420px",
+          height: "600px",
+          backgroundColor: "#f9cce2", // rosa bebê
+          border: "3px solid #b2e0b2", // verde claro
+          boxShadow: "0px 0px 25px #b2e0b2",
+        }}
+        className="rounded-4 p-4 d-flex flex-column"
+      >
+        <h3 className="text-center mb-3 text-dark fw-bold">devChat 💬</h3>
+
+        <div className="d-flex flex-column gap-3 overflow-auto flex-grow-1 mb-3">
+          {messageList.map((message, index) => (
+            <div
+              className={`${
+                message.authorId === props.socket.id
+                  ? "align-self-end ms-5"
+                  : "align-self-start me-5"
+              } bg-white bg-opacity-25 text-dark rounded-3 p-2`}
+              key={index}
+            >
+              <div className="fw-semibold">{message.author}</div>
+              <div>{message.text}</div>
+            </div>
+          ))}
+          <div ref={bottomRef} />
+        </div>
+
+        <div className="input-group">
+          <input
+            id="messageInput"
+            ref={messageRef}
+            autoFocus
+            type="text"
+            className="form-control border-0"
+            style={{
+              backgroundColor: "#d0f5d3", // verde clarinho
+              color: "#000000",
+            }}
+            placeholder="Digite sua mensagem..."
+            onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
+          />
+          <button
+            className="btn"
+            style={{
+              backgroundColor: "#b2e0b2",
+              color: "#000",
+              borderLeft: "2px solid white",
+            }}
+            onClick={handleSubmit}
+          >
+            <i className="bi bi-send-fill"></i>
+          </button>
+        </div>
+      </div>
     </div>
-
-    <div id="chat-footer" className='input-group'>
-        <input 
-        id='msgUser'
-        name='msgUser'
-        className=''
-         type="text" 
-         placeholder='Mensagem' />
-         
-        <i className='bi bi-send-fill'></i>
-    </div>
-  </div>
-  
+  );
 };
 
-export default Chat
+export default Chat;
