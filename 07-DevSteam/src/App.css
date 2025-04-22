@@ -19,7 +19,7 @@ body{
 .promoCard{
     width:280px;
     transition: transform 0.2s;
-background: linear-gradient(to bottom, #19587b, #2b87ae);
+background: linear-gradient(to bottom, #416317);
 
 }
 
@@ -37,5 +37,5 @@ background: linear-gradient(to bottom, #19587b, #2b87ae);
   }
 
   #addCarrinho:houver{
-    background-color: #547625;
+    background-color: #4CD930 !important;
   }
