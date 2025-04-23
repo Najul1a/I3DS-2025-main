@@ -17,8 +17,8 @@ const Header = (props) => {
 
         <i className='bi bi-cart  text-light fs-2'></i>
 
-        {props.contadorJogod > 0 &&  <span className='position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger'>
-            {props.contadorJogod}</span>}
+        {props.contadorJogo > 0 &&  <span className='position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger'>
+            {props.contadorJogo}</span>}
         
             
       
