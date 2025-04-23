@@ -13,7 +13,7 @@ function App() {
   return (
     <>
       <Header contadorJogos={contador} />
-      <Promotion onAddCarrinho = {handleAddCarrinho}  //
+      <Promotion onAddCarrinho = {handleAddCarrinho}  //adicionando o click para promoção
        /> 
     </>
   );

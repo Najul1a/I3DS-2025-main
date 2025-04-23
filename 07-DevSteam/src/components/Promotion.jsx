@@ -89,7 +89,8 @@ const Promotion = (props) => { //ele vai começar a receber algo e props
             preco={jogo.preco.toFixed(2)}
             desconto={jogo.desconto}
             imagem={jogo.imagem}
-            onAddCarrinho={props.onAddCarrinho} // Passa a função de adicionar ao carrinho
+            //Add onClick no card
+            onAddCarrinho={props.onAddCarrinho()} // Passa a função de adicionar ao carrinho
           />
         ))}
       </div>
